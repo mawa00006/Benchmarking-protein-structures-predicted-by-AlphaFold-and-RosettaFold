@@ -2,13 +2,13 @@
   {
     "name": "Test Fold Job Number One",
     "modelSeeds": [],
-    "sequences": [
+    "sequences": 
       {
         "proteinChain": {
         "sequence": "NNLEEEVQKLLYELSEIWHQHDHEASREALHRVLEVLKQLLEHNNLEQAVELISIAVHVAVRVNNEHVIRELHHLLRRLLKQVKEHNNNKLYIAVMSVIMQLE",
         "count": 1        
       }
       }
-    ]
+    
   }
 ]
