@@ -1,0 +1,122 @@
+[
+    {
+        "name": "9GEA",
+        "modelSeeds": [],
+        "sequences": [
+            {
+                "proteinChain": {
+                    "sequence": "PKEPEQLRKLFIGGLSFETTDESLRSHFEQWGTLTDCVVMRDPNTKRSRGFGFVTYATVEEVDAAMNARPHKVDGRVVEPKRAVSLTVKKIFVGGIKEDTEEHHLRDYFEQYGKIEVIEIMTDRGSGKKRGFAFVTFDDHDSVDKIVIQKYHTVNGHNCEVRKAL",
+                    "count": 1
+                }
+            }
+        ]
+    },
+    {
+        "name": "9GH3",
+        "modelSeeds": [],
+        "sequences": [
+            {
+                "proteinChain": {
+                    "sequence": "SMSYDIQAWKKQCEELLNLIFQCEDSEPFRQPVDLLEYPDYRDIIDTPMDFATVRETLEAGNYESPMELCKDVRLIFSNSKAYTPSKRSRIYSMSNELSAFFEEHISSVLSDYKSALRFHKRNTITKR",
+                    "count": 1
+                }
+            }
+        ]
+    },
+    {
+        "name": "9FSB",
+        "modelSeeds": [],
+        "sequences": [
+            {
+                "proteinChain": {
+                    "sequence": "GPAFEFAVAMMKRNSSTVKTEYGEFTMLGIYDKWAVLPRHAKPGPTILMNDQEVSVLDAKELVDKDGTNLELTLLKLNRNEKFRDIRGFLAKEEVEVNEAVLAINTSKFPNMYIPVGQVTDYGFLNLGGTPTKRMLMYNFPTRAGQCGGVLMSTGKVLGIHVGGNGHQGFSAALLKHYFN",
+                    "count": 1
+                }
+            }
+        ]
+    },
+    {
+        "name": "9FTW",
+        "modelSeeds": [],
+        "sequences": [
+            {
+                "proteinChain": {
+                    "sequence": "HSSDAITKEEIQSISEKIYRADTNKAQKEDIVLNSQNCISPSETRNQVDRCPKPLFTYVNEKLFSKPTYAAFINLLNNYQRATGHGEHFSAQELAEQDAFLREIMKTAVMKELYSFLHHQNRYGSEQEFVDDLKNMWFGLYSRGNEEGDSSGFEHVFSGEVKKGKVTGFHNWIRFYLEEKEGLVDYYSHIYDGPWDSYPDVLAMQFNWDGYYKEVGSAFIGSSPEFEFALYSLCFIARPGKVCQLSLGGYPLAVRTYTWDKSTYGNGKKYIATAYIVSS",
+                    "count": 1
+                }
+            }
+        ]
+    },
+    {
+        "name": "9J23",
+        "modelSeeds": [],
+        "sequences": [
+            {
+                "proteinChain": {
+                    "sequence": "GPGPGARGIQGPQGPRGPGPGPG",
+                    "count": 1
+                }
+            }
+        ]
+    },
+    {
+        "name": "9IYF",
+        "modelSeeds": [],
+        "sequences": [
+            {
+                "proteinChain": {
+                    "sequence": "MASMTGGQQMGRGSMSTKAIYPGTFDPITNGHIDIITRAASMFDRVILAIAASPSKKPMFDLEERVALATTALQHLPNVEVMGFSDLMANFARAQQANILIRGLRAVADFEYEMQLAHMNRHLMPELESVFLMPSKEWSFISSSLVKEVARHAGDVTHFLPANVHQALMEKLK",
+                    "count": 1
+                }
+            }
+        ]
+    },
+    {
+        "name": "9G7H",
+        "modelSeeds": [],
+        "sequences": [
+            {
+                "proteinChain": {
+                    "sequence": "PFTADKGKCGLPEIFDPPEELERKVWELARLVWQSSSVVFHTGAGISTASGIPDFRGPHGVWTMEERGLAPKFDTTFESARPTQTHMALVQLERVGLLRFLVSQNVDGLHVRSGFPRDKLAELHGNMFVEECAKCKTQYVRDTVVGTMGLKATGRLCTVACRGELRDTILDWEDSLPDRDLALADEASRNADLSITLGTSLQIRPSGNLPLATKRRGGRLVIVNLQPTKHDRHADLRIHGYVDEVMTRLMKHLGLEIPAWDGPRVLERALPPLPRPPTPKLE",
+                    "count": 1
+                }
+            }
+        ]
+    },
+    {
+        "name": "9J26",
+        "modelSeeds": [],
+        "sequences": [
+            {
+                "proteinChain": {
+                    "sequence": "PGPGPGERGPPGGVGFPGPGPGPG",
+                    "count": 1
+                }
+            }
+        ]
+    },
+    {
+        "name": "9FFD",
+        "modelSeeds": [],
+        "sequences": [
+            {
+                "proteinChain": {
+                    "sequence": "QCVKLNDGHFMPVLGFGTYAPPEVPRSKALEVTKLAIEAGFRHIDSAHLYNNEEQVGLAIRSKIADGSVKREDIFYTSKLWSTFHRPELVRPALENSLKKAQLDYVDLYLIHSPMSLKPGEELSPTDENGKVIFDIVDLCTTWEAMEKCKDAGLAKSIGVSNFNRRQLEMILNKPGLKYKPVCNQVECHPYFNRSKLLDFCKSKDIVLVAYSALGSQRDKRWVDPNSPVLLEDPVLCALAKKHKRTPALIALRYQLQRGVVVLAKSYNEQRIRQNVQVFEFQLTAEDMKAIDGLDRNLHYFNSDSFASHPNYPYSDEY",
+                    "count": 1
+                }
+            }
+        ]
+    },
+    {
+        "name": "9FEK",
+        "modelSeeds": [],
+        "sequences": [
+            {
+                "proteinChain": {
+                    "sequence": "MAKKRTYQGKVPLHDNYGPEAKYAVEAEALLPTTKFEEEIARGLELGLPGADSIKDRRIPTFSRGELPHFAGINTFIKAPYVEDVRKCGQYDVAILGAPFDGGTTYRAGTRFGPQGIRKISALYGTYSFELGVDLRESVSICDVGDIFTIPGNIEKTFDQVSKGVGHVFASGAFPVVLGGDHSLGFATVRGVAQHLNGKKLGILHFDRHVDTQDTDLDERMHTTPWFHATNIPNVPAKNLVQIGIGGWQAPRPGVKAGRERQTTIMTVTDCVEMGIENAAKQALEVAFDGVDAVWLSFDVDCLDAAFVPGTGWPEPGGFLPREVLKFLQIIADTKPLAGMEIVECAPPYDAAEITSLMATRVICDVLACQVRSGHLG",
+                    "count": 1
+                }
+            }
+        ]
+    }
+]
