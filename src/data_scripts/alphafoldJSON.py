@@ -1,17 +1,22 @@
-"""
-This script creates a JSON file for the AlphaFold3 webserver for batch upload.
-Input: Foldername of fasta files which you want to upload
-Output: JSON file in the right formatting for upload
-"""
-
-import json
+"""Generate a JSON file from a folder of FASTA files for batch uploading to the AlphaFold3 webserver."""
 import os
+import json
 from Bio import SeqIO
 
 
-def createJSON(output_json, folder_path):
+def create_JSON(output_json, folder_path):
+    """
+    Generate a JSON file from a folder of FASTA files for batch uploading to the AlphaFold3 webserver.
+
+    :param output_json: The file path where the generated JSON file will be saved.
+    :param folder_path: The directory containing the FASTA files to process.
+    :returns: None. Writes the generated JSON content to the specified output file.
+    :raises FileNotFoundError: If the specified folder or output file path is invalid.
+    :raises ValueError: If the FASTA file cannot be read or is in an incorrect format.
+    """
+
     # List for collecting the entries
-    listOfEntries = []
+    list_of_entries = []
 
     # Going through all files
     for file_name in os.listdir(folder_path):
@@ -19,14 +24,14 @@ def createJSON(output_json, folder_path):
             file_path = os.path.join(folder_path, file_name)
             print(f"Processing {file_name}...")
 
-            # Read Sequence
+            # Read Sequence from the FASTA file
             record = SeqIO.read(file_path, "fasta")
 
-            # Get protein name
-            name = str(file_name)[0:4]
+            # Get protein name (first 4 characters of the file name)
+            name = str(file_name)[:4]
             sequence = str(record.seq)
 
-            # structure of the JSON file.
+            # Structure of the JSON file
             dictionary = {
                 "name": name,
                 "modelSeeds": [],
@@ -40,15 +45,17 @@ def createJSON(output_json, folder_path):
                 ]
             }
 
-            listOfEntries.append(dictionary)
+            list_of_entries.append(dictionary)
 
-    json_object = json.dumps(listOfEntries, indent=4)
+    # Convert the list of entries to JSON format
+    json_object = json.dumps(list_of_entries, indent=4)
 
+    # Write the JSON object to the output file
     with open(output_json, 'w') as j_out:
         j_out.write(json_object)
 
 
-# Create JSON file containing 20 entries to upload to Alphafold
+# Create JSON file containing 20 entries to upload to the AlphaFold3 webserver
 createJSON("../../data/json_files/fastasplit_1_20.json", "../../data/fasta_files/Fasta_longest_chain_1_20")
 createJSON("../../data/json_files/fastasplit_21_40.json", "../../data/fasta_files/Fasta_longest_chain_21_40")
 createJSON("../../data/json_files/fastasplit_41_60.json", "../../data/fasta_files/Fasta_longest_chain_41_60")
