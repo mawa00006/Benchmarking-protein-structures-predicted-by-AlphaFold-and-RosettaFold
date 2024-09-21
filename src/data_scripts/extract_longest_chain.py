@@ -131,8 +131,17 @@ def save_longest_chain_as_mmcif(chain: Chain, output_dir: str, structure_id:str)
     # Initialize MMCIFIO for saving in mmcif format
     io = MMCIFIO()
 
+    # Create a new structure with filtered residues
+    filtered_chain = Chain(chain.get_id())
+
+    for residue in chain.get_residues():
+        # Filter to include only standard amino acids (is_aa checks this)
+        # Exclude water (HOH) and other heteroatoms
+        if is_aa(residue, standard=True):
+            filtered_chain.add(residue)
+
     # Set the chain structure to MMCIF
-    io.set_structure(chain)
+    io.set_structure(filtered_chain)
 
     # Generate the output filename
     output_file = os.path.join(output_dir,f"{structure_id}.cif")
