@@ -6,7 +6,7 @@ import biotite.database.rcsb as rcsb
 pdb_id_file_path = '../../data/group1_pdbs.txt'  # Replace with your file path
 
 # Directory to save the downloaded pdbx files
-pdbx_dir = '../../data/pdbx_files'
+pdbx_dir = '../../data/mmcif_files'
 if not os.path.exists(pdbx_dir):
     os.makedirs(pdbx_dir)
 
@@ -18,7 +18,7 @@ with open(pdb_id_file_path, 'r') as file:
 for pdb_id in pdb_ids:
     try:
         # Fetch the pdbx file
-        pdbx_file_path = rcsb.fetch(pdb_id, 'pdbx', pdbx_dir)
+        pdbx_file_path = rcsb.fetch(pdb_id, 'mmcif', pdbx_dir)
         print(f"Downloaded: {pdbx_file_path}")
     except Exception as e:
         print(f"Error downloading {pdb_id}: {e}")
