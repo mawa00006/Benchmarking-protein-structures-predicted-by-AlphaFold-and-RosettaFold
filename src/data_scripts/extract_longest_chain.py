@@ -2,7 +2,7 @@
 import os
 from Bio import PDB, SeqIO
 from Bio.Seq import Seq
-from Bio.PDB import is_aa
+from Bio.PDB import is_aa, MMCIFIO
 from Bio.PDB.Chain import Chain
 from Bio.PDB.Structure import Structure
 from Bio.SeqRecord import SeqRecord
@@ -117,20 +117,51 @@ def save_longest_chain_as_fasta(pdbx_file: str, output_dir_pdbx: str, longest_ch
         raise ValueError(f"No valid chain found in {pdbx_file}")
 
 
+def save_longest_chain_as_mmcif(chain: Chain, output_dir: str, structure_id:str) -> None:
+    """
+    Save a given chain object to an MMCIF file.
+
+    :param chain: The chain object to save in MMCIF format.
+    :returns: The path to the saved MMCIF file.
+    :raises ValueError: If the chain object is invalid.
+    """
+    if not isinstance(chain, Chain):
+        raise ValueError("The provided chain is not a valid Chain object.")
+
+    # Initialize MMCIFIO for saving in mmcif format
+    io = MMCIFIO()
+
+    # Set the chain structure to MMCIF
+    io.set_structure(chain)
+
+    # Generate the output filename
+    output_file = os.path.join(output_dir,f"{structure_id}.mmcif")
+
+    # Save the chain in MMCIF format
+    io.save(output_file)
+
+
 # Directory where pdbx/mmcif files are stored
 pdbx_dir = "../../data/pdbx_files"
 # Directory to store FASTA files containing the longest chain
-output_dir = "../../data/fasta_files"
+output_dir_fasta = "../../data/fasta_files"
+# Directory to store mmcif files containing the longest chain
+output_dir_mmcif = "../../data/mmcif_files_longest_chain"
 
 # Create the output directory if it doesn't exist
-if not os.path.exists(output_dir):
-    os.makedirs(output_dir)
+if not os.path.exists(output_dir_fasta):
+    os.makedirs(output_dir_fasta)
+
+if not os.path.exists(output_dir_mmcif):
+    os.makedirs(output_dir_mmcif)
 
 for pdbx_file in os.listdir(pdbx_dir):
     if pdbx_file.endswith(".pdbx"):
+        pdb_id = pdbx_file.replace(".pdbx", "")
         cif_path = os.path.join(pdbx_dir, pdbx_file)
         longest_chain, length = get_longest_chain(cif_path)
         print(f"File: {pdbx_file}, Longest chain: {longest_chain.id}, Length: {length}")
 
         # Save the sequence of the longest chain in FASTA format
-        save_longest_chain_as_fasta(pdbx_file, output_dir, longest_chain)
+        save_longest_chain_as_fasta(pdbx_file, output_dir_fasta, longest_chain)
+        save_longest_chain_as_mmcif(longest_chain, output_dir_mmcif, pdb_id)
