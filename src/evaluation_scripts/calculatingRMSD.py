@@ -74,13 +74,14 @@ def filter_amino_acids_by_mask(atom_array: AtomArray, mask: np.ndarray) -> list[
               of the contiguous amino acids marked by `1` in the mask.
     :raises ValueError: If the mask length doesn't match the residue count.
     """
-    residue_ids = np.unique(atom_array.res_id)  # Get unique residue IDs in sequence
-    if len(mask) != len(residue_ids):
-        raise ValueError(f"Mask length must match the number of unique residues in the AtomArray. {len(mask)},"
-                         f" {len(residue_ids)}")
+    #residue_ids = np.unique(atom_array.res_id)  # Get unique residue IDs in sequence
+    #if len(mask) != len(residue_ids):
+    #    raise ValueError(f"Mask length must match the number of unique residues in the AtomArray. {len(mask)},"
+    #                     f" {len(residue_ids)}")
 
-    blocks = group_residues_by_mask(mask, residue_ids)
-    return [extract_atoms_for_block(atom_array, block) for block in blocks]
+    blocks = group_residues_by_mask(mask, atom_array)
+    return blocks
+    #return [extract_atoms_for_block(atom_array, block) for block in blocks]
 
 
 def group_residues_by_mask(mask: np.ndarray, residue_ids: np.ndarray) -> list[np.ndarray]:
@@ -156,7 +157,7 @@ def main() -> None:
             experimental_structure = experimental_structure[np.isin(experimental_structure.atom_name, ["C", "CA", "N", "O"])]
             alphafold_structure = alphafold_structure[np.isin(alphafold_structure.atom_name, ["C", "CA", "N", "O"])]
             loop_annotation = get_loop_annotation(os.path.join(loop_path, loop_annotation_file))
-
+            loop_annotation = np.repeat(np.array(loop_annotation), 4)
         except FileNotFoundError as fnf_error:
             logging.error(f"File not found for compound {compound_id}: {fnf_error}")
             continue
@@ -165,11 +166,21 @@ def main() -> None:
             logging.debug(traceback.format_exc())
             continue
 
+        # Superimpose structures
+        x_experimental = experimental_structure.coord
+        y_alpha = alphafold_structure.coord
+        y_ros = rosetta_structure.coord
+
+        # Superimpose structures
+        y_on_x_alpha = superimpose_structures(x_experimental, y_alpha)
+        y_on_x_ros = superimpose_structures(x_experimental, y_ros)
+
+
         try:
             # Filter loops
-            experimental_loops = filter_amino_acids_by_mask(experimental_structure, loop_annotation)
-            alphafold_loops = filter_amino_acids_by_mask(alphafold_structure, loop_annotation)
-            rosetta_loops = filter_amino_acids_by_mask(rosetta_structure, loop_annotation)
+            experimental_loops = filter_amino_acids_by_mask(x_experimental, loop_annotation)
+            alphafold_loops = filter_amino_acids_by_mask(y_on_x_alpha, loop_annotation)
+            rosetta_loops = filter_amino_acids_by_mask(y_on_x_ros, loop_annotation)
 
         except KeyError as ke:
             logging.error(f"Key error while filtering loops for compound {compound_id}: {ke}")
@@ -181,17 +192,14 @@ def main() -> None:
             continue
 
         for i, (exp_loop, alpha_loop, ros_loop) in enumerate(zip(experimental_loops, alphafold_loops, rosetta_loops)):
-            loop_len = len(np.unique(exp_loop.res_id))
-            x_experimental = exp_loop.coord
-            y_alpha = alpha_loop.coord
-            y_ros = ros_loop.coord
+            loop_len = len(exp_loop) / 4
 
             # Superimpose structures
-            y_on_x_alpha = superimpose_structures(x_experimental, y_alpha)
-            y_on_x_ros = superimpose_structures(x_experimental, y_ros)
+            #y_on_x_alpha = superimpose_structures(x_experimental, y_alpha)
+            #y_on_x_ros = superimpose_structures(x_experimental, y_ros)
 
-            rmsd_alpha = calculate_rmsd(x_experimental, y_on_x_alpha)
-            rmsd_ros = calculate_rmsd(x_experimental, y_on_x_ros)
+            rmsd_alpha = calculate_rmsd(exp_loop, alpha_loop)
+            rmsd_ros = calculate_rmsd(exp_loop, ros_loop)
 
             alpha_row = {'structure_id': compound_id, 'model': "alpha", 'loop_len': loop_len,
                          'rmsd': round(rmsd_alpha, 3)}
@@ -202,6 +210,7 @@ def main() -> None:
             out_df = pd.concat([out_df, pd.DataFrame([rosetta_row])], ignore_index=True)
 
     out_df.to_csv("results.csv")
+    out_df.to_csv("../../doc/fig/results.csv")
 
 
 if __name__ == "__main__":
