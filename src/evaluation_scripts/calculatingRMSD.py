@@ -1,67 +1,86 @@
+"""
+This script compares the RMSD of loop regions in protein structures
+from experimental, AlphaFold, and Rosetta models.
+"""
+
+import logging
 import os
+import pickle
+import traceback
 
 import biotite.structure as struc
 import biotite.structure.io as strucio
 import numpy as np
-import pickle
-from Bio.SVDSuperimposer import SVDSuperimposer
+import pandas as pd
 from Bio.PDB.MMCIFParser import MMCIFParser
 from Bio.PDB.PDBParser import PDBParser
+from Bio.SVDSuperimposer import SVDSuperimposer
 from tqdm import tqdm
 from biotite.structure import AtomArray
-import pandas as pd
-
-import logging
-import traceback
-import os
-import numpy as np
 
 # Set up logging configuration
 logging.basicConfig(filename="log.log",
-                    filemode='w', level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
+                    filemode='w',
+                    level=logging.ERROR,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
 
-def calculate_rmsd(s1, s2):
-    all_dist = 0
+
+def calculate_rmsd(s1: np.ndarray, s2: np.ndarray) -> float:
+    """
+    Calculate the RMSD between two sets of coordinates.
+
+    :param s1: First set of coordinates.
+    :param s2: Second set of coordinates.
+    :returns: RMSD value.
+    """
+    total_distance = 0
     for l in range(len(s1)):
-        c1 = s1[l]#.coord
-        c2 = s2[l]#.coord
-        # Calculate the RMSD between two sets of coordinates
-        distance = np.sqrt((c1[0] - c2[0])** 2 + (c1[1] - c2[1])** 2 + (c1[2] - c1[2])** 2)
-        all_dist += distance
+        c1 = s1[l]
+        c2 = s2[l]
+        # Calculate the distance between corresponding atoms
+        distance = np.sqrt((c1[0] - c2[0]) ** 2 +
+                           (c1[1] - c2[1]) ** 2 +
+                           (c1[2] - c1[2]) ** 2)
+        total_distance += distance
 
-    rmsd = np.sqrt((all_dist/len(s1)))
+    rmsd = np.sqrt(total_distance / len(s1))
     return rmsd
 
-def get_loop_annotation(filepath):
-    with open(filepath, "rb") as fp:
-        annotation = pickle.load(fp)
-    return annotation
+
+def get_loop_annotation(filepath: str) -> np.ndarray:
+    """
+    Load loop annotation from a file.
+
+    :param filepath: Path to the file containing loop annotation.
+    :returns: A numpy array with the loop annotation.
+    """
+    try:
+        with open(filepath, "rb") as fp:
+            annotation = pickle.load(fp)
+        return annotation
+    except Exception as e:
+        logging.error(f"Error loading loop annotation from {filepath}: {e}")
+        raise
 
 
 def filter_amino_acids_by_mask(atom_array: AtomArray, mask: np.ndarray) -> list[AtomArray]:
     """
     Filters the amino acids from an AtomArray based on a binary mask.
-    Groups the atoms of the amino acids in contiguous blocks of `1`s from the mask.
 
     :param atom_array: The AtomArray containing the atoms of the protein,
                        with atoms grouped by amino acids in order.
-    :param mask: A binary mask (numpy array) where `1` indicates keeping the corresponding amino acid.
+    :param mask: A binary mask where `1` indicates keeping the corresponding amino acid.
     :returns: A list of AtomArray objects, where each AtomArray contains atoms
               of the contiguous amino acids marked by `1` in the mask.
-    :raises ValueError: If the length of the mask does not match the number of unique residues in the AtomArray.
+    :raises ValueError: If the mask length doesn't match the residue count.
     """
-
     residue_ids = np.unique(atom_array.res_id)  # Get unique residue IDs in sequence
     if len(mask) != len(residue_ids):
-        raise ValueError(f"Mask length must match the number of unique residues in the AtomArray. {len(mask)}, {len(residue_ids)}")
+        raise ValueError(f"Mask length must match the number of unique residues in the AtomArray. {len(mask)},"
+                         f" {len(residue_ids)}")
 
-    # Group by contiguous '1's
     blocks = group_residues_by_mask(mask, residue_ids)
-
-    # Extract atoms for each contiguous block
-    batches = [extract_atoms_for_block(atom_array, block) for block in blocks]
-
-    return batches
+    return [extract_atoms_for_block(atom_array, block) for block in blocks]
 
 
 def group_residues_by_mask(mask: np.ndarray, residue_ids: np.ndarray) -> list[np.ndarray]:
@@ -100,16 +119,24 @@ def extract_atoms_for_block(atom_array: AtomArray, block: np.ndarray) -> AtomArr
     return atom_array[np.isin(atom_array.res_id, block)]
 
 
-def superimpose_structures(x_coords, y_coords):
+def superimpose_structures(x_coords: np.ndarray, y_coords: np.ndarray) -> np.ndarray:
+    """
+    Superimpose two structures using SVD.
+
+    :param x_coords: Coordinates of the reference structure.
+    :param y_coords: Coordinates of the structure to be superimposed.
+    :returns: Transformed coordinates of y structure after superimposition.
+    """
     sup = SVDSuperimposer()
     sup.set(x_coords, y_coords)
     sup.run()
-    y_on_x = sup.get_transformed()
-    return y_on_x
+    return sup.get_transformed()
 
 
-def main():
-
+def main() -> None:
+    """
+    Main function to process structures, filter loops, and calculate RMSD for protein structures.
+    """
     loop_path = "../../data/loop_annotations"
     loop_annotation_files = os.listdir(loop_path)
 
@@ -131,10 +158,11 @@ def main():
             loop_annotation = get_loop_annotation(os.path.join(loop_path, loop_annotation_file))
 
         except FileNotFoundError as fnf_error:
+            logging.error(f"File not found for compound {compound_id}: {fnf_error}")
             continue
         except Exception as e:
             logging.error(f"Error loading structures or annotations for compound {compound_id}: {e}")
-            logging.debug(traceback.format_exc())  # Log detailed stack trace
+            logging.debug(traceback.format_exc())
             continue
 
         try:
@@ -142,7 +170,6 @@ def main():
             experimental_loops = filter_amino_acids_by_mask(experimental_structure, loop_annotation)
             alphafold_loops = filter_amino_acids_by_mask(alphafold_structure, loop_annotation)
             rosetta_loops = filter_amino_acids_by_mask(rosetta_structure, loop_annotation)
-
 
         except KeyError as ke:
             logging.error(f"Key error while filtering loops for compound {compound_id}: {ke}")
@@ -163,10 +190,8 @@ def main():
             y_on_x_alpha = superimpose_structures(x_experimental, y_alpha)
             y_on_x_ros = superimpose_structures(x_experimental, y_ros)
 
-
             rmsd_alpha = calculate_rmsd(x_experimental, y_on_x_alpha)
             rmsd_ros = calculate_rmsd(x_experimental, y_on_x_ros)
-
 
             alpha_row = {'structure_id': compound_id, 'model': "alpha", 'loop_len': loop_len,
                          'rmsd': round(rmsd_alpha, 3)}
@@ -180,5 +205,4 @@ def main():
 
 
 if __name__ == "__main__":
-
     main()
