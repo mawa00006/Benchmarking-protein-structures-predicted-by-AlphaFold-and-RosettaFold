@@ -1,0 +1,15 @@
+[{
+ "name": "8G4K",
+ "modelSeeds": [
+  "143156095"
+ ],
+ "sequences": [
+  {
+   "proteinChain": {
+    "sequence": "MKFPQLCKFCDVRFSTCDNQKSCMSNCSITSICEKPQEVCVAVWRKNDENITLETVCHDPKLPYHDFILEDAASPKCIMKEKKKPGETFFMCSCSSDECNDNIIFSEEYNT",
+    "count": 1
+   }
+  }
+ ]
+}
+]

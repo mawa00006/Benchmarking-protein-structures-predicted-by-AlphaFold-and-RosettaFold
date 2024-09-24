@@ -1,0 +1,15 @@
+[{
+ "name": "8GAC",
+ "modelSeeds": [
+  "1103461439"
+ ],
+ "sequences": [
+  {
+   "proteinChain": {
+    "sequence": "NNLEEEVQKLLYELSEIWHQHDHEASREALHRVLEVLKQLLEHNNLEQAVELISIAVHVAVRVNNEHVIRELHHLLRRLLKQVKEHNNNKLYIAVMSVIMQLE",
+    "count": 1
+   }
+  }
+ ]
+}
+]

@@ -1,0 +1,15 @@
+[{
+ "name": "8WQ5_longest_chain",
+ "modelSeeds": [
+  "1235707721"
+ ],
+ "sequences": [
+  {
+   "proteinChain": {
+    "sequence": "MQIQTDVVLPSCKKKAPAETPVKERLFIVFNPHPLPLDVLEDIFCRFGNLIEVYLVSGKNVGYAKYADRISANDAIATLHGKILNGVRLKVMLADSPRE",
+    "count": 1
+   }
+  }
+ ]
+}
+]

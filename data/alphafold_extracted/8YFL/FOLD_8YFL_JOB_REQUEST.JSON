@@ -1,0 +1,15 @@
+[{
+ "name": "8YFL",
+ "modelSeeds": [
+  "2115482382"
+ ],
+ "sequences": [
+  {
+   "proteinChain": {
+    "sequence": "HSEKIAIRDFQVGDLVLIILDERHDNYVLFTVSPTLYFLHSESLPALDLKPRRPWVLGKVMEKEYCQAKKAQNRFKVPLGTKFYRVKAVSWN",
+    "count": 1
+   }
+  }
+ ]
+}
+]

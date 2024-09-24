@@ -1,0 +1,15 @@
+[{
+ "name": "8TLH_1",
+ "modelSeeds": [
+  "798083877"
+ ],
+ "sequences": [
+  {
+   "proteinChain": {
+    "sequence": "SMTLPHIIRPVEEVTEEEIRNICSNSREKIYNRSLGSTCHQCRQKTTDTKTNCRNPDCWGIRGQFCGPCLRNRYGEEVKDALLDPNWHCPPCRGICNCSFCRQR",
+    "count": 1
+   }
+  }
+ ]
+}
+]

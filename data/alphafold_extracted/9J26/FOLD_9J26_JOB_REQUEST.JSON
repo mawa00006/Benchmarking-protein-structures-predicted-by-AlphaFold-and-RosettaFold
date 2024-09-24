@@ -1,0 +1,15 @@
+[{
+ "name": "9J26",
+ "modelSeeds": [
+  "211645745"
+ ],
+ "sequences": [
+  {
+   "proteinChain": {
+    "sequence": "PGPGPGERGPPGGVGFPGPGPGPG",
+    "count": 1
+   }
+  }
+ ]
+}
+]

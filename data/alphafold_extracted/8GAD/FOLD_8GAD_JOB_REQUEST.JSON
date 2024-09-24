@@ -1,0 +1,15 @@
+[{
+ "name": "8GAD",
+ "modelSeeds": [
+  "84616370"
+ ],
+ "sequences": [
+  {
+   "proteinChain": {
+    "sequence": "SMEEEIEEAYDLVEEAEKTGDTSLLKKAKELLDKVAEEATKSGNPILLIRVIIILIKIVRNSGDPSVAALARELLEKLEEIAEKEGNRFIEAMGEALRTQIERAL",
+    "count": 1
+   }
+  }
+ ]
+}
+]

@@ -1,0 +1,15 @@
+[{
+ "name": "8TLG_1",
+ "modelSeeds": [
+  "78839175"
+ ],
+ "sequences": [
+  {
+   "proteinChain": {
+    "sequence": "MTLPHIIRPVEEVTEEEIRNICSNSREKIYNRSLGSTCHQCRQKTTDTKTNCRNPDCWGIRGQFCGPCLRNRYGEEVKDALLDPNWHCPPCRGICNCSFCRQR",
+    "count": 1
+   }
+  }
+ ]
+}
+]
