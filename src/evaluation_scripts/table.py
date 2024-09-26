@@ -6,7 +6,7 @@ def csv_to_latex_table(csv_file, output_file='latex_table.tex'):
     df = pd.read_csv(csv_file)
 
     # Pivot the data to get one row per loop length, with alpha and rosetta values in separate columns
-    pivot_df = df.pivot(index='loop_len', columns='model', values=['mean_rmsd', 'sem_rmsd'])
+    pivot_df = df.pivot(index='loop_len', columns='Model', values=['mean_rmsd', 'sem_rmsd'])
 
     # Create the LaTeX table as a string
     latex_table = r"""\begin{table}[ht]
@@ -19,10 +19,10 @@ def csv_to_latex_table(csv_file, output_file='latex_table.tex'):
 
     # Iterate over each row to format the LaTeX table rows
     for loop_len in pivot_df.index:
-        mean_alpha = pivot_df.loc[loop_len, ('mean_rmsd', 'alpha')]
-        sem_alpha = pivot_df.loc[loop_len, ('sem_rmsd', 'alpha')]
-        mean_rosetta = pivot_df.loc[loop_len, ('mean_rmsd', 'rosetta')]
-        sem_rosetta = pivot_df.loc[loop_len, ('sem_rmsd', 'rosetta')]
+        mean_alpha = pivot_df.loc[loop_len, ('mean_rmsd', 'AlphaFold')]
+        sem_alpha = pivot_df.loc[loop_len, ('sem_rmsd', 'AlphaFold')]
+        mean_rosetta = pivot_df.loc[loop_len, ('mean_rmsd', 'RoseTTAFold')]
+        sem_rosetta = pivot_df.loc[loop_len, ('sem_rmsd', 'RoseTTAFold')]
 
         # Add a row to the LaTeX table string
         latex_table += f"{loop_len} & {mean_alpha:.2f} ± {sem_alpha:.2f} & {mean_rosetta:.2f} ± {sem_rosetta:.2f} \\\\ \n"
