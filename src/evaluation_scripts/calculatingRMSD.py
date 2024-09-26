@@ -40,7 +40,7 @@ def calculate_rmsd(s1: np.ndarray, s2: np.ndarray) -> float:
         # Calculate the distance between corresponding atoms
         distance = np.sqrt((c1[0] - c2[0]) ** 2 +
                            (c1[1] - c2[1]) ** 2 +
-                           (c1[2] - c1[2]) ** 2)
+                           (c1[2] - c2[2]) ** 2)
         total_distance += distance
 
     rmsd = np.sqrt(total_distance / len(s1))
@@ -166,6 +166,8 @@ def main() -> None:
             logging.debug(traceback.format_exc())
             continue
 
+
+
         # Superimpose structures
         x_experimental = experimental_structure.coord
         y_alpha = alphafold_structure.coord
@@ -174,6 +176,8 @@ def main() -> None:
         # Superimpose structures
         y_on_x_alpha = superimpose_structures(x_experimental, y_alpha)
         y_on_x_ros = superimpose_structures(x_experimental, y_ros)
+
+
 
 
         try:

@@ -144,7 +144,7 @@ def save_longest_chain_as_mmcif(chain: Chain, output_dir: str, structure_id:str)
     io.set_structure(filtered_chain)
 
     # Generate the output filename
-    output_file = os.path.join(output_dir,f"{structure_id}.cif")
+    output_file = os.path.join(output_dir, f"{structure_id}.cif")
 
     # Save the chain in MMCIF format
     io.save(output_file)

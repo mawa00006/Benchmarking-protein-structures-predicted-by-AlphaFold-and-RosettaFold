@@ -13,7 +13,7 @@ def get_GDT(s1, s2, d):
             c2 = s2[l].coord
 
             # Calculate the gdt between two sets of coordinates
-            distance = np.sqrt((c1[0] - c2[0])** 2 + (c1[1] - c2[1])** 2 + (c1[2] - c1[2])** 2)
+            distance = np.sqrt((c1[0] - c2[0])** 2 + (c1[1] - c2[1])** 2 + (c1[2] - c2[2]) ** 2)
             if distance < d:
                 gdt += 1
             num_of_residues += 1
