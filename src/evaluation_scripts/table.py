@@ -30,7 +30,7 @@ def csv_to_latex_table(csv_file, output_file='latex_table.tex'):
     # Add the bottom rule and closing LaTeX code
     latex_table += r"""\bottomrule
 \end{tabular}
-\caption{Mean RMSD with Standard Error (SEM) for Alpha and Rosetta Models}
+\caption{Mean RMSD with Standard Error (SEM) for AlphaFold and Rosetta Models}
 \label{table:rmsd_alpha_rosetta}
 \end{table}
 """
