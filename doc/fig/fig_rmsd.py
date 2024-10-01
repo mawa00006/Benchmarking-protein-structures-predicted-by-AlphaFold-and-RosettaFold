@@ -45,4 +45,5 @@ ax2.legend(title='Model')
 
 
 plt.savefig("rmsd.pdf", dpi=300)
+plt.savefig("rmsd.png", dpi=300)
 plt.show()

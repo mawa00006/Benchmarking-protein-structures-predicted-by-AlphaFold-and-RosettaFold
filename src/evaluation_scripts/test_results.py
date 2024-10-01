@@ -16,6 +16,8 @@ print("alpha", alpha_df.describe())
 print("rosetta", rosetta_df.describe())
 print("95% loop length", alpha_df["loop_len"].quantile(0.95))
 print("99% loop length", alpha_df["loop_len"].quantile(0.99))
+print(np.median(alpha_df["RMSD"].values))
+print(np.median(rosetta_df["RMSD"].values))
 
 print("alpha", alpha_df_gdt.describe())
 print("rosetta", rosetta_df_gdt.describe())
@@ -31,3 +33,14 @@ grouped['sem_rmsd'] = grouped['sem_rmsd'].round(2)
 
 # Save the rounded data to a new CSV file
 grouped.to_csv('mean_rmsd_by_loop_and_model.csv', index=False)
+
+
+alpha_df = alpha_df[alpha_df["loop_len"] > 2]
+rosetta_df = rosetta_df[rosetta_df["loop_len"] > 2]
+
+print(np.median(alpha_df["RMSD"].values))
+print(np.median(rosetta_df["RMSD"].values))
+
+print("alpha", alpha_df.describe())
+print("rosetta", rosetta_df.describe())
+

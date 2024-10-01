@@ -25,6 +25,39 @@ logging.basicConfig(filename="log.log",
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
 
+def get_GDT(s1, s2, d):
+    gdt = 0
+    num_of_residues = 0
+    for l in range(len(s1)):
+            c1 = s1[l]
+            c2 = s2[l]
+
+            # Calculate the gdt between two sets of coordinates
+            distance = calculate_rmsd(c1, c2)
+            if distance < d:
+                gdt += 1
+            num_of_residues += 1
+
+    gdt = (gdt / num_of_residues) * 100
+
+    return gdt
+
+
+def get_GDT_TS(s1, s2):
+
+    gdt_ts = 0
+
+    #GDT_TS = (GDT_P1 + GDT_P2 + GDT_P4 + GDT_P8)/4
+    distances = [1, 2, 4, 8]
+
+    for d in distances:
+        gdt_ts += get_GDT(s1, s2, d)
+
+    gdt_ts = gdt_ts / 4
+
+    return gdt_ts
+
+
 def calculate_rmsd(s1: np.ndarray, s2: np.ndarray) -> float:
     """
     Calculate the RMSD between two sets of coordinates.
@@ -33,18 +66,7 @@ def calculate_rmsd(s1: np.ndarray, s2: np.ndarray) -> float:
     :param s2: Second set of coordinates.
     :returns: RMSD value.
     """
-    total_distance = 0
-    for l in range(len(s1)):
-        c1 = s1[l]
-        c2 = s2[l]
-        # Calculate the distance between corresponding atoms
-        distance = np.sqrt((c1[0] - c2[0]) ** 2 +
-                           (c1[1] - c2[1]) ** 2 +
-                           (c1[2] - c2[2]) ** 2)
-        total_distance += distance
-
-    rmsd = np.sqrt(total_distance / len(s1))
-    return rmsd
+    return np.sqrt(((((s1 - s2)** 2))).sum(-1).mean())
 
 
 def get_loop_annotation(filepath: str) -> np.ndarray:
@@ -141,7 +163,8 @@ def main() -> None:
     loop_path = "../../data/loop_annotations"
     loop_annotation_files = os.listdir(loop_path)
 
-    out_df = pd.DataFrame(columns=['structure_id', 'model', 'loop_len', 'rmsd'])
+    out_df = pd.DataFrame(columns=['structure_id', 'Model', 'loop_len', 'RMSD'])
+    out_df_gdt = pd.DataFrame(columns=['structure_id', 'Model', 'GDT_TS'])
 
     for loop_annotation_file in tqdm(loop_annotation_files):
 
@@ -166,9 +189,30 @@ def main() -> None:
             logging.debug(traceback.format_exc())
             continue
 
+        exp_CA = experimental_structure[np.isin(experimental_structure.atom_name, ["CA"])]
+        alpha_CA = alphafold_structure[np.isin(alphafold_structure.atom_name, ["CA"])]
+        ros_CA = rosetta_structure[np.isin(rosetta_structure.atom_name, ["CA"])]
+
+        x_exp_CA = exp_CA.coord
+        x_alpha_CA = alpha_CA.coord
+        x_ros_CA = ros_CA.coord
+
+        # superimpose
+        y_on_x_alpha_CA = superimpose_structures(x_exp_CA, x_alpha_CA)
+        y_on_x_ros_CA = superimpose_structures(x_exp_CA, x_ros_CA)
+
+        GDT_TS_alpha = get_GDT_TS(x_exp_CA, y_on_x_alpha_CA)
+        GDT_TS_ros = get_GDT_TS(x_exp_CA, y_on_x_ros_CA)
+
+        alpha_row = {'structure_id': compound_id, 'Model': "AlphaFold",
+                     'GDT_TS': round(GDT_TS_alpha, 3)}
+        rosetta_row = {'structure_id': compound_id, 'Model': "RoseTTAFold",
+                       'GDT_TS': round(GDT_TS_ros, 3)}
+        # Append the row to the DataFrame
+        out_df_gdt = pd.concat([out_df_gdt, pd.DataFrame([alpha_row])], ignore_index=True)
+        out_df_gdt = pd.concat([out_df_gdt, pd.DataFrame([rosetta_row])], ignore_index=True)
 
 
-        # Superimpose structures
         x_experimental = experimental_structure.coord
         y_alpha = alphafold_structure.coord
         y_ros = rosetta_structure.coord
@@ -198,23 +242,23 @@ def main() -> None:
         for i, (exp_loop, alpha_loop, ros_loop) in enumerate(zip(experimental_loops, alphafold_loops, rosetta_loops)):
             loop_len = len(exp_loop) / 4
 
-            # Superimpose structures
-            #y_on_x_alpha = superimpose_structures(x_experimental, y_alpha)
-            #y_on_x_ros = superimpose_structures(x_experimental, y_ros)
 
             rmsd_alpha = calculate_rmsd(exp_loop, alpha_loop)
             rmsd_ros = calculate_rmsd(exp_loop, ros_loop)
 
-            alpha_row = {'structure_id': compound_id, 'model': "alpha", 'loop_len': loop_len,
-                         'rmsd': round(rmsd_alpha, 3)}
-            rosetta_row = {'structure_id': compound_id, 'model': "rosetta", 'loop_len': loop_len,
-                           'rmsd': round(rmsd_ros, 3)}
+            alpha_row = {'structure_id': compound_id, 'Model': "AlphaFold", 'loop_len': loop_len,
+                         'RMSD': round(rmsd_alpha, 3)}
+            rosetta_row = {'structure_id': compound_id, 'Model': "RoseTTAFold", 'loop_len': loop_len,
+                           'RMSD': round(rmsd_ros, 3)}
             # Append the row to the DataFrame
             out_df = pd.concat([out_df, pd.DataFrame([alpha_row])], ignore_index=True)
             out_df = pd.concat([out_df, pd.DataFrame([rosetta_row])], ignore_index=True)
 
     out_df.to_csv("results.csv")
     out_df.to_csv("../../doc/fig/results.csv")
+
+    out_df_gdt.to_csv("results_GDT_TS.csv")
+    out_df_gdt.to_csv("../../doc/fig/results_GDT_TS.csv")
 
 
 if __name__ == "__main__":
