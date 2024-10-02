@@ -1,7 +1,12 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
+from tueplots import bundles
 
+# Apply tueplots style
+plt.rcParams.update(bundles.iclr2024(nrows=1, ncols=2))
+
+plt.rc('text', usetex=True)
 
 def create_plot(df1, df2, df3, df4, df5, model):
     # Create the plot
