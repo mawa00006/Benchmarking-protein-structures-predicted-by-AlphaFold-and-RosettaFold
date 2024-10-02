@@ -139,5 +139,15 @@ with PdfPages('../src/evaluation_scripts/fig_rmsd_relative_to_adjacentSSE.pdf') 
                 grouped_rosetta_helix_helix, grouped_rosetta_helix_end, model='RoseTTAFold')
     pdf.savefig()  # Save the second figure to the same PDF
     plt.close()    # Close the figure after saving
-        
-        
+
+BB = len(alpha_df_beta_beta)*100/(len(alpha_df_beta_beta)+len(alpha_df_beta_end)+len(alpha_df_beta_helix)+len(alpha_df_helix_end)+len(alpha_df_helix_helix))       
+BE = len(alpha_df_beta_end)*100/(len(alpha_df_beta_beta)+len(alpha_df_beta_end)+len(alpha_df_beta_helix)+len(alpha_df_helix_end)+len(alpha_df_helix_helix)) 
+BH = len(alpha_df_beta_helix)*100/(len(alpha_df_beta_beta)+len(alpha_df_beta_end)+len(alpha_df_beta_helix)+len(alpha_df_helix_end)+len(alpha_df_helix_helix)) 
+HH = len(alpha_df_helix_helix)*100/(len(alpha_df_beta_beta)+len(alpha_df_beta_end)+len(alpha_df_beta_helix)+len(alpha_df_helix_end)+len(alpha_df_helix_helix)) 
+HE = len(alpha_df_helix_end)*100/(len(alpha_df_beta_beta)+len(alpha_df_beta_end)+len(alpha_df_beta_helix)+len(alpha_df_helix_end)+len(alpha_df_helix_helix)) 
+
+print(f'Percentage of sheet-sheet {BB}')
+print(f'Percentage of sheet-end {BE}')
+print(f'Percentage of sheet-helix {BH}')
+print(f'Percentage of helix-end {HE}')
+print(f'Percentage of helix-helix {HH}')
