@@ -1,0 +1,143 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_pdf import PdfPages
+
+
+def create_plot(df1, df2, df3, df4, df5, model):
+    # Create the plot
+    plt.figure(figsize=(10, 6))
+    
+    ## Plot each dataset with error bars
+    #plt.errorbar(df1['loop_len'], df1['mean_rmsd'], yerr=df1['sem_rmsd'], label='Sheet-Sheet', fmt='-o')
+    #plt.errorbar(df2['loop_len'], df2['mean_rmsd'], yerr=df2['sem_rmsd'], label='Sheet-End', fmt='-o')
+    #plt.errorbar(df3['loop_len'], df3['mean_rmsd'], yerr=df3['sem_rmsd'], label='Sheet-Helix', fmt='-o')
+    #plt.errorbar(df4['loop_len'], df4['mean_rmsd'], yerr=df4['sem_rmsd'], label='Helix-Helix', fmt='-o')
+    #plt.errorbar(df5['loop_len'], df5['mean_rmsd'], yerr=df5['sem_rmsd'], label='Helix-End', fmt='-o')
+    
+    plt.errorbar(df1['loop_len'], df1['mean_rmsd'], label='Sheet-Sheet', fmt='-o', linestyle='-', marker='o')
+    plt.errorbar(df2['loop_len'], df2['mean_rmsd'], label='Sheet-End', fmt='--^', linestyle='--', marker='^')
+    plt.errorbar(df3['loop_len'], df3['mean_rmsd'], label='Sheet-Helix', fmt='-.s', linestyle='-.', marker='s')
+    plt.errorbar(df4['loop_len'], df4['mean_rmsd'], label='Helix-Helix', fmt=':D', linestyle=':', marker='D')
+    plt.errorbar(df5['loop_len'], df5['mean_rmsd'], label='Helix-End', fmt='-.x', linestyle='-', marker='x')
+    
+    # Labels and title
+    plt.xlabel('Loop Length')
+    plt.ylabel('Average RMSD')
+    plt.title(f'Average RMSD vs Loop Length Relative to Adjacent Secondary Structures for {model}')
+
+    # Add legend
+    plt.legend(title='Secondary Structure at Loop Ends')
+    
+    
+# Load the CSV file into a DataFrame 
+df = pd.read_csv('results_adjacentSSE.csv')
+
+alpha_df = df[df["model"] == "alpha"]
+rosetta_df = df[df["model"] == "rosetta"]
+
+alpha_df_helix_helix = alpha_df[((alpha_df["secondary_structure_before"] == "H") | 
+                                 (alpha_df["secondary_structure_before"] == "G") |
+                                 (alpha_df["secondary_structure_before"] == "I")) &
+                                ((alpha_df["secondary_structure_after"] == "H") | 
+                                 (alpha_df["secondary_structure_after"] == "G") |
+                                 (alpha_df["secondary_structure_after"] == "I"))]
+alpha_df_beta_beta = alpha_df[((alpha_df["secondary_structure_before"] == "B") | 
+                               (alpha_df["secondary_structure_before"] == "E")) &
+                              ((alpha_df["secondary_structure_after"] == "B") | 
+                               (alpha_df["secondary_structure_after"] == "E"))]
+alpha_df_beta_end = alpha_df[(((alpha_df["secondary_structure_before"] == "B") | 
+                               (alpha_df["secondary_structure_before"] == "E")) &
+                              (alpha_df["secondary_structure_after"] == "end")) |
+                             ((alpha_df["secondary_structure_before"] == "end") &
+                              ((alpha_df["secondary_structure_after"] == "B") | 
+                               (alpha_df["secondary_structure_after"] == "E")))]
+alpha_df_helix_end = alpha_df[(((alpha_df["secondary_structure_before"] == "H") | 
+                                (alpha_df["secondary_structure_before"] == "G") |
+                                (alpha_df["secondary_structure_before"] == "I")) &
+                               (alpha_df["secondary_structure_after"] == "end")) |
+                              ((alpha_df["secondary_structure_before"] == "end") &
+                               ((alpha_df["secondary_structure_after"] == "H") | 
+                                (alpha_df["secondary_structure_after"] == "G") |
+                                (alpha_df["secondary_structure_after"] == "I")))]
+alpha_df_beta_helix = alpha_df[(((alpha_df["secondary_structure_before"] == "H") | 
+                                (alpha_df["secondary_structure_before"] == "G") |
+                                (alpha_df["secondary_structure_before"] == "I")) &
+                               ((alpha_df["secondary_structure_after"] == "B") | 
+                                (alpha_df["secondary_structure_after"] == "E"))) |
+                               (((alpha_df["secondary_structure_before"] == "B") | 
+                                 (alpha_df["secondary_structure_before"] == "E")) &
+                               ((alpha_df["secondary_structure_after"] == "H") | 
+                                (alpha_df["secondary_structure_after"] == "G") |
+                                (alpha_df["secondary_structure_after"] == "I")))]
+
+rosetta_df_helix_helix = rosetta_df[((rosetta_df["secondary_structure_before"] == "H") | 
+                                 (rosetta_df["secondary_structure_before"] == "G") |
+                                 (rosetta_df["secondary_structure_before"] == "I")) &
+                                ((rosetta_df["secondary_structure_after"] == "H") | 
+                                 (rosetta_df["secondary_structure_after"] == "G") |
+                                 (rosetta_df["secondary_structure_after"] == "I"))]
+rosetta_df_beta_beta = rosetta_df[((rosetta_df["secondary_structure_before"] == "B") | 
+                               (rosetta_df["secondary_structure_before"] == "E")) &
+                              ((rosetta_df["secondary_structure_after"] == "B") | 
+                               (rosetta_df["secondary_structure_after"] == "E"))]
+rosetta_df_beta_end = rosetta_df[(((rosetta_df["secondary_structure_before"] == "B") | 
+                               (rosetta_df["secondary_structure_before"] == "E")) &
+                              (rosetta_df["secondary_structure_after"] == "end")) |
+                             ((rosetta_df["secondary_structure_before"] == "end") &
+                              ((rosetta_df["secondary_structure_after"] == "B") | 
+                               (rosetta_df["secondary_structure_after"] == "E")))]
+rosetta_df_helix_end = rosetta_df[(((rosetta_df["secondary_structure_before"] == "H") | 
+                                (rosetta_df["secondary_structure_before"] == "G") |
+                                (rosetta_df["secondary_structure_before"] == "I")) &
+                               (rosetta_df["secondary_structure_after"] == "end")) |
+                              ((rosetta_df["secondary_structure_before"] == "end") &
+                               ((rosetta_df["secondary_structure_after"] == "H") | 
+                                (rosetta_df["secondary_structure_after"] == "G") |
+                                (rosetta_df["secondary_structure_after"] == "I")))]
+rosetta_df_beta_helix = rosetta_df[(((rosetta_df["secondary_structure_before"] == "H") | 
+                                (rosetta_df["secondary_structure_before"] == "G") |
+                                (rosetta_df["secondary_structure_before"] == "I")) &
+                               ((rosetta_df["secondary_structure_after"] == "B") | 
+                                (rosetta_df["secondary_structure_after"] == "E"))) |
+                               (((rosetta_df["secondary_structure_before"] == "B") | 
+                                 (rosetta_df["secondary_structure_before"] == "E")) &
+                               ((rosetta_df["secondary_structure_after"] == "H") | 
+                                (rosetta_df["secondary_structure_after"] == "G") |
+                                (rosetta_df["secondary_structure_after"] == "I")))]
+
+
+# Average RMSD as a function of loop length with standard error bars for each model
+grouped_alphafold_beta_beta = alpha_df_beta_beta.groupby(['loop_len']).agg(mean_rmsd=('rmsd', 'mean'), sem_rmsd=('rmsd', 'sem')).reset_index()
+grouped_alphafold_beta_end = alpha_df_beta_end.groupby(['loop_len']).agg(mean_rmsd=('rmsd', 'mean'), sem_rmsd=('rmsd', 'sem')).reset_index()
+grouped_alphafold_beta_helix = alpha_df_beta_helix.groupby(['loop_len']).agg(mean_rmsd=('rmsd', 'mean'), sem_rmsd=('rmsd', 'sem')).reset_index()
+grouped_alphafold_helix_helix = alpha_df_helix_helix.groupby(['loop_len']).agg(mean_rmsd=('rmsd', 'mean'), sem_rmsd=('rmsd', 'sem')).reset_index()
+grouped_alphafold_helix_end = alpha_df_helix_end.groupby(['loop_len']).agg(mean_rmsd=('rmsd', 'mean'), sem_rmsd=('rmsd', 'sem')).reset_index()
+
+grouped_rosetta_beta_beta = rosetta_df_beta_beta.groupby(['loop_len']).agg(mean_rmsd=('rmsd', 'mean'), sem_rmsd=('rmsd', 'sem')).reset_index()
+grouped_rosetta_beta_end = rosetta_df_beta_end.groupby(['loop_len']).agg(mean_rmsd=('rmsd', 'mean'), sem_rmsd=('rmsd', 'sem')).reset_index()
+grouped_rosetta_beta_helix = rosetta_df_beta_helix.groupby(['loop_len']).agg(mean_rmsd=('rmsd', 'mean'), sem_rmsd=('rmsd', 'sem')).reset_index()
+grouped_rosetta_helix_helix = rosetta_df_helix_helix.groupby(['loop_len']).agg(mean_rmsd=('rmsd', 'mean'), sem_rmsd=('rmsd', 'sem')).reset_index()
+grouped_rosetta_helix_end = rosetta_df_helix_end.groupby(['loop_len']).agg(mean_rmsd=('rmsd', 'mean'), sem_rmsd=('rmsd', 'sem')).reset_index()
+
+for grouped in [grouped_alphafold_beta_beta,grouped_alphafold_beta_end,grouped_alphafold_beta_helix,grouped_alphafold_helix_end,grouped_alphafold_helix_helix,
+                grouped_rosetta_beta_beta,grouped_rosetta_beta_end,grouped_rosetta_beta_helix,grouped_rosetta_helix_end,grouped_rosetta_helix_helix]:
+    grouped['mean_rmsd'] = grouped['mean_rmsd'].round(2)
+    grouped['sem_rmsd'] = grouped['sem_rmsd'].round(2)
+    
+
+# Create a PDF to save the plots
+with PdfPages('../src/evaluation_scripts/fig_rmsd_relative_to_adjacentSSE.pdf') as pdf:
+       
+    # First plot for model 'AlphaFold'
+    create_plot(grouped_alphafold_beta_beta, grouped_alphafold_beta_end, grouped_alphafold_beta_helix,
+                grouped_alphafold_helix_helix, grouped_alphafold_helix_end, model='AlphaFold')
+    pdf.savefig()  # Save the current figure to the PDF
+    plt.close()    # Close the figure to create a new one
+
+    # Second plot for model 'Rosettafold' 
+    create_plot(grouped_rosetta_beta_beta, grouped_rosetta_beta_end, grouped_rosetta_beta_helix,
+                grouped_rosetta_helix_helix, grouped_rosetta_helix_end, model='RoseTTAFold')
+    pdf.savefig()  # Save the second figure to the same PDF
+    plt.close()    # Close the figure after saving
+        
+        
