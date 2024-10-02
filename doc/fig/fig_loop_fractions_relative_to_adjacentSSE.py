@@ -2,6 +2,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from matplotlib.backends.backend_pdf import PdfPages
+from tueplots import bundles
+
+# Apply tueplots style
+plt.rcParams.update(bundles.iclr2024(nrows=1, ncols=2))
+
+plt.rc('text', usetex=True)
 
 # Load the CSV file into a DataFrame 
 data = pd.read_csv('results_adjacentSSE.csv')
@@ -62,7 +68,7 @@ loop_types = {
 with PdfPages('fig_loop_fractions_relative_to_adjacentSSE.pdf') as pdf:
     
     # Plot settings
-    plt.figure(figsize=(8, 6))
+    plt.figure(figsize=(10, 6))
     
     # Prepare the histogram data
     hist_data = [group_df['loop_len'].dropna() for group_df in loop_types.values()]
@@ -70,19 +76,34 @@ with PdfPages('fig_loop_fractions_relative_to_adjacentSSE.pdf') as pdf:
     # Create a stacked histogram with a small gap between the bars (rwidth < 1)
     plt.hist(hist_data, bins=np.arange(0, 26) - 0.5, stacked=True, 
              color=[loop_colors[loop_type] for loop_type in loop_types.keys()],
-             alpha=0.7, rwidth=0.9)
+             alpha=0.7, rwidth=0.8)
 
     # Labels and title
-    plt.xlabel('Loop Length')
-    plt.ylabel('Frequency')
+    plt.xlabel('Loop Length', fontsize=32)
+    plt.ylabel('Frequency', fontsize=32)
 
-    # Add legend and grid
-    plt.legend(title='Secondary Structure at Loop Ends', labels=loop_types.keys())
-    plt.grid(axis='y', linestyle='--', linewidth=0.7)
+    # Increase font size of both x and y ticks
+    plt.xticks(fontsize=26)
+    plt.yticks(fontsize=26)
 
-    # Adjust layout
-    plt.tight_layout()
+    # Add legend 
+    plt.legend(title='Secondary Structure at Loop Ends', labels=loop_types.keys(),
+           fontsize=28, title_fontsize=32, loc='upper right',
+           frameon=True, edgecolor='grey', 
+           handlelength=2, handletextpad=0.5)
+
+    # Add horizontal grid lines only at y=100, 200, and 300
+    plt.grid(axis='y', linestyle='--', linewidth=0.7, color='black')
+    plt.gca().set_yticks([100, 200, 300])
+
+    # Set outer border thickness
+    plt.gca().spines['top'].set_linewidth(3)
+    plt.gca().spines['right'].set_linewidth(3)
+    plt.gca().spines['left'].set_linewidth(3)
+    plt.gca().spines['bottom'].set_linewidth(3)
+
 
     # Save the plot to the PDF
     pdf.savefig()
+    #plt.show()
     plt.close()  # Close the plot after saving
