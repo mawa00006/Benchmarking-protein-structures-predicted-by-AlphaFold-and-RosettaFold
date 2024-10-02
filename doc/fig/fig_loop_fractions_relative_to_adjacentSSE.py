@@ -76,7 +76,7 @@ with PdfPages('fig_loop_fractions_relative_to_adjacentSSE.pdf') as pdf:
     plt.ylabel('Frequency')
 
     # Add legend and grid
-    plt.legend(title='Loop Type', labels=loop_types.keys())
+    plt.legend(title='Secondary Structure at Loop Ends', labels=loop_types.keys())
     plt.grid(axis='y', linestyle='--', linewidth=0.7)
 
     # Adjust layout
