@@ -14,19 +14,31 @@ def create_plot(df1, df2, df3, df4, df5, model):
     #plt.errorbar(df4['loop_len'], df4['mean_rmsd'], yerr=df4['sem_rmsd'], label='Helix-Helix', fmt='-o')
     #plt.errorbar(df5['loop_len'], df5['mean_rmsd'], yerr=df5['sem_rmsd'], label='Helix-End', fmt='-o')
     
-    plt.errorbar(df1['loop_len'], df1['mean_rmsd'], label='Sheet-Sheet', fmt='-o', linestyle='-', marker='o')
-    plt.errorbar(df2['loop_len'], df2['mean_rmsd'], label='Sheet-End', fmt='--^', linestyle='--', marker='^')
-    plt.errorbar(df3['loop_len'], df3['mean_rmsd'], label='Sheet-Helix', fmt='-.s', linestyle='-.', marker='s')
-    plt.errorbar(df4['loop_len'], df4['mean_rmsd'], label='Helix-Helix', fmt=':D', linestyle=':', marker='D')
-    plt.errorbar(df5['loop_len'], df5['mean_rmsd'], label='Helix-End', fmt='-.x', linestyle='-', marker='x')
+    plt.errorbar(df1['loop_len'], df1['mean_rmsd'], label='Sheet-Sheet', fmt='-o', linestyle='-', marker='o', linewidth=3)
+    plt.errorbar(df2['loop_len'], df2['mean_rmsd'], label='Sheet-End', fmt='--^', linestyle='--', marker='^', linewidth=3)
+    plt.errorbar(df3['loop_len'], df3['mean_rmsd'], label='Sheet-Helix', fmt='-.s', linestyle='-.', marker='s', linewidth=3)
+    plt.errorbar(df4['loop_len'], df4['mean_rmsd'], label='Helix-Helix', fmt=':D', linestyle=':', marker='D', linewidth=3)
+    plt.errorbar(df5['loop_len'], df5['mean_rmsd'], label='Helix-End', fmt='-.x', linestyle='-', marker='x', linewidth=3)
     
     # Labels and title
-    plt.xlabel('Loop Length')
-    plt.ylabel('Average RMSD')
-    plt.title(f'Average RMSD vs Loop Length Relative to Adjacent Secondary Structures for {model}')
+    plt.xlabel('Loop Length', fontsize=32)
+    plt.ylabel('Average RMSD', fontsize=32)
+    #plt.title(f'Average RMSD vs Loop Length Relative to Adjacent Secondary Structures for {model}')
+    
+    plt.xticks(fontsize=26)
+    plt.yticks(fontsize=26)
 
     # Add legend
-    plt.legend(title='Secondary Structure at Loop Ends')
+    plt.legend(title='Secondary Structure',
+           fontsize=24, title_fontsize=28, loc='upper right',
+           frameon=True, #bbox_to_anchor=(1.25, 1.25),
+           handlelength=1.5, handletextpad=0.1, labelspacing=0.1)
+    
+    # Set outer border thickness
+    plt.gca().spines['top'].set_linewidth(3)
+    plt.gca().spines['right'].set_linewidth(3)
+    plt.gca().spines['left'].set_linewidth(3)
+    plt.gca().spines['bottom'].set_linewidth(3)
     
     
 # Load the CSV file into a DataFrame 
