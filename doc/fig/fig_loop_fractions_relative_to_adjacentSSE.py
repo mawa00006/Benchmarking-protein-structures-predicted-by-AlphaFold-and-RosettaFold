@@ -66,10 +66,11 @@ with PdfPages('fig_loop_fractions_relative_to_adjacentSSE.pdf') as pdf:
     
     # Prepare the histogram data
     hist_data = [group_df['loop_len'].dropna() for group_df in loop_types.values()]
-    # Create a stacked histogram
+    
+    # Create a stacked histogram with a small gap between the bars (rwidth < 1)
     plt.hist(hist_data, bins=np.arange(0, 26) - 0.5, stacked=True, 
              color=[loop_colors[loop_type] for loop_type in loop_types.keys()],
-             alpha=0.7)
+             alpha=0.7, rwidth=0.9)
 
     # Labels and title
     plt.xlabel('Loop Length')
