@@ -10,8 +10,9 @@ and RoseTTAFold using the Root Mean Squared Deviation (RMSD) and the Global Dist
 This project is part of the Structure Bioinformatics SS24 Group Project @Eberhard Karls University Tuebingen by Prof. Dr. Oliver Kohlbacher.
 
 # Results
-We found AlphaFold to give superior structural predictions than RoseTTAFold.
-![alt text](https://github.com/mawa00006/Benchmarking-protein-structures-predicted-by-AlphaFold-and-RosettaFold/blob/main/doc/fig/png/fig_3_rmsd.png?raw=true)
+Our benchmarking of AlphaFold and RoseTTAFold demonstrates the accuracy of these modern algorithms. With acceptable average RMSD values of the loop regions and GDT_TS mostly above 80 for both AlphaFold and RoseTTAFold, it is clear that these two algorithms seem to reach the levels of predictive power they claim as these values are considered a near experimental level of accuracy. The prediction of the loop regions deteriorated with increasing loop length as the flexibility of these regions makes an accurate prediction difficult. Still, our analysis considering secondary structures at loop ends confirms both AlphaFold and RoseTTAFold predict loops inside chains with a length of less than fifteen residues (with best results at a length less than eight residues) astonishingly well. 
+
+AlphaFold significantly outperformed RoseTTAFold considering both the GDT_TS and the RMSD of the loop regions, making it the superior model of our analysis.![alt text](https://github.com/mawa00006/Benchmarking-protein-structures-predicted-by-AlphaFold-and-RosettaFold/blob/main/doc/fig/png/fig_3_rmsd.png?raw=true)
 
 
 ### Reproducing Results
