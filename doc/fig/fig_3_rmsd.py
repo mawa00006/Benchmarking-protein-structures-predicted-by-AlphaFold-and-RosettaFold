@@ -18,8 +18,8 @@ alpha_df = df[df["Model"] == "AlphaFold"]
 rosetta_df = df[df["Model"] == "RoseTTAFold"]
 
 # Calculate the mean RMSD for each model
-mean_alpha = np.median(alpha_df["RMSD"].values)
-mean_ros = np.median(rosetta_df["RMSD"].values)
+mean_alpha = np.mean(alpha_df["RMSD"].values)
+mean_ros = np.mean(rosetta_df["RMSD"].values)
 
 # Create a figure with two subplots
 fig, (ax1, ax2) = plt.subplots(1, 2)
