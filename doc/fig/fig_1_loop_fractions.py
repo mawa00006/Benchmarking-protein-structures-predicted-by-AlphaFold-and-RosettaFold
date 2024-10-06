@@ -9,7 +9,7 @@ import scipy.stats as stats
 plt.rcParams.update(bundles.iclr2024(nrows=1, ncols=2))
 
 folder_path = '../../data/loop_annotations'
-df = pd.read_csv("results.csv")
+df = pd.read_csv("../../src/results/results.csv")
 
 # Initialize an empty list to store the percentages
 percentages = []
@@ -56,6 +56,8 @@ ax1.yaxis.grid(color='gray', linestyle='dashed')
 y_min, y_max = ax1.get_ylim()
 unique_loops = df['loop_len'].value_counts() / 2
 
+mean_len = int(np.mean(df['loop_len'].values))
+
 print(unique_loops.values)
 
 # Plot histogram of loop lengths
@@ -64,11 +66,11 @@ ax2.set_xlabel('Loop length')
 ax2.set_ylabel('Frequency')
 
 y_min, y_max = ax2.get_ylim()
-ax2.text(6, y_max*0.85, 'Mean: 5')
-ax2.axvline(5, color='k', linestyle='dashed', linewidth=1)
+ax2.text(mean_len+1, y_max*0.85, f'Mean: {mean_len}')
+ax2.axvline(mean_len, color='k', linestyle='dashed', linewidth=1)
 ax2.set_axisbelow(True)
 ax2.yaxis.grid(color='gray', linestyle='dashed')
 
-plt.savefig("fig_loop_fractions.pdf", dpi=300)
-plt.savefig("fig_loop_fractions.png", dpi=300)
+plt.savefig("pdf/fig_1_loop_fractions.pdf", dpi=300)
+plt.savefig("png/fig_1_loop_fractions.png", dpi=300)
 plt.show()
