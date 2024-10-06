@@ -11,7 +11,7 @@ This project is part of the Structure Bioinformatics SS24 Group Project @Eberhar
 
 # Results
 We found AlphaFold to give superior structural predictions than RoseTTAFold.
-![alt text](https://github.com/mawa00006/Benchmarking-protein-structures-predicted-by-AlphaFold-and-RosettaFold/blob/main/doc/fig/png/rmsd.png?raw=true)
+![alt text](https://github.com/mawa00006/Benchmarking-protein-structures-predicted-by-AlphaFold-and-RosettaFold/blob/main/doc/fig/png/fig_3_rmsd.png?raw=true)
 
 
 ### Reproducing Results
