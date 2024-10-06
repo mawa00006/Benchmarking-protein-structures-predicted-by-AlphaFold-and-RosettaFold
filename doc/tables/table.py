@@ -42,4 +42,4 @@ def csv_to_latex_table(csv_file, output_file='latex_table.tex'):
     print(f"LaTeX table written to {output_file}")
 
 
-csv_to_latex_table('mean_rmsd_by_loop_and_model.csv')
+csv_to_latex_table('../../src/evaluation_scripts/mean_rmsd_by_loop_and_model.csv')
