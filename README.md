@@ -45,4 +45,4 @@ Additional contributors include:
 - **[Thusheera Kumarasekara](https://github.com/tckumarasekara)**
 - **[Vishwa Patel](https://github.com/VPatel1412)**
 
-Thank you to all the contributors for their work and dedication to the project. Special thanks to our Tutors Tom Mueller and Alexander Röhl.
+Thank you to all the contributors for their work and dedication to the project. Special thanks to our Tutors Tom Müller and Alexander Röhl.
