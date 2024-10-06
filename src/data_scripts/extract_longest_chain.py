@@ -150,27 +150,32 @@ def save_longest_chain_as_mmcif(chain: Chain, output_dir: str, structure_id:str)
     io.save(output_file)
 
 
-# Directory where pdbx/mmcif files are stored
-pdbx_dir = "../../data/pdbx_files"
-# Directory to store FASTA files containing the longest chain
-output_dir_fasta = "../../data/fasta_files"
-# Directory to store mmcif files containing the longest chain
-output_dir_mmcif = "../../data/mmcif_files_longest_chain"
+def main():
+    # Directory where pdbx/mmcif files are stored
+    pdbx_dir = "../../data/pdbx_files"
+    # Directory to store FASTA files containing the longest chain
+    output_dir_fasta = "../../data/fasta_files"
+    # Directory to store mmcif files containing the longest chain
+    output_dir_mmcif = "../../data/mmcif_files_longest_chain"
 
-# Create the output directory if it doesn't exist
-if not os.path.exists(output_dir_fasta):
-    os.makedirs(output_dir_fasta)
+    # Create the output directory if it doesn't exist
+    if not os.path.exists(output_dir_fasta):
+        os.makedirs(output_dir_fasta)
 
-if not os.path.exists(output_dir_mmcif):
-    os.makedirs(output_dir_mmcif)
+    if not os.path.exists(output_dir_mmcif):
+        os.makedirs(output_dir_mmcif)
 
-for pdbx_file in os.listdir(pdbx_dir):
-    if pdbx_file.endswith(".pdbx"):
-        pdb_id = pdbx_file.replace(".pdbx", "")
-        cif_path = os.path.join(pdbx_dir, pdbx_file)
-        longest_chain, length = get_longest_chain(cif_path)
-        print(f"File: {pdbx_file}, Longest chain: {longest_chain.id}, Length: {length}")
+    for pdbx_file in os.listdir(pdbx_dir):
+        if pdbx_file.endswith(".pdbx"):
+            pdb_id = pdbx_file.replace(".pdbx", "")
+            cif_path = os.path.join(pdbx_dir, pdbx_file)
+            longest_chain, length = get_longest_chain(cif_path)
+            print(f"File: {pdbx_file}, Longest chain: {longest_chain.id}, Length: {length}")
 
-        # Save the sequence of the longest chain in FASTA format
-        save_longest_chain_as_fasta(pdbx_file, output_dir_fasta, longest_chain)
-        save_longest_chain_as_mmcif(longest_chain, output_dir_mmcif, pdb_id)
+            # Save the sequence of the longest chain in FASTA format
+            save_longest_chain_as_fasta(pdbx_file, output_dir_fasta, longest_chain)
+            save_longest_chain_as_mmcif(longest_chain, output_dir_mmcif, pdb_id)
+
+
+if __name__ == "__main__":
+    main()
