@@ -156,7 +156,7 @@ def main():
     # Directory to store FASTA files containing the longest chain
     output_dir_fasta = "../../data/fasta_files"
     # Directory to store mmcif files containing the longest chain
-    output_dir_mmcif = "../../data/mmcif_files_longest_chain"
+    output_dir_mmcif = "../../data/cif_files_longest_chain"
 
     # Create the output directory if it doesn't exist
     if not os.path.exists(output_dir_fasta):
